@@ -1,0 +1,3 @@
+import sys
+class NetworkSecurityException(Exception):
+    def __init__(self, message):

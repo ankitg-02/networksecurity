@@ -1,0 +1,9 @@
+pandas
+numpy
+python-dotenv
+pymongo
+certifi
+pymongo[srv]==3.12
+pymongo[aws]==3.12
+
+-e .

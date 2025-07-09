@@ -11,6 +11,8 @@ netwroksecurity/componenets/__init__.py
 netwroksecurity/constants/__init__.py
 netwroksecurity/entity/__init__.py
 netwroksecurity/exception/__init__.py
+netwroksecurity/exception/exception.py
 netwroksecurity/logging/__init__.py
+netwroksecurity/logging/logger.py
 netwroksecurity/pipeline/__init__.py
 netwroksecurity/utils/__init__.py
