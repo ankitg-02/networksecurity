@@ -34,28 +34,28 @@ class NetworkDataExtraction:
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
-    def push_data_to_mongodb(self, records, collection, database):
+    def push_data_to_mongodb(self, records, collection,database):
         try:
-            print("Connecting to database:", database)
-            print("Target collection:", collection)
+            self.database = database
+            self.collection = collection
+            self.records = records
+            
             self.mongo_client = pymongo.MongoClient(MONGO_DB_URL)
-            db = self.mongo_client[database]
-            col = db[collection]
-            result = col.insert_many(records)
-            print("Inserted IDs:", result.inserted_ids[:5], "...")  # print first 5 IDs
-            print("Total inserted:", len(result.inserted_ids))
-            return len(result.inserted_ids)
+            self.database = self.mongo_client[self.database]
+            
+            self.collection = self.database[self.collection]
+            self.collection.insert_many(self.records)
+            return (len(self.records))
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
         
 if __name__ == "__main__":
     FILEPATH = r'Network_Data\phisingData.csv'  # use raw string to avoid escape sequence warning
-    DATABASE = 'ANKIT_PROJECT'
+    DATABASE = 'ANKIT_'
     COLLECTION = 'Network_Data'
     networkobject = NetworkDataExtraction()
     records = networkobject.csv_to_json_convertor(FILEPATH)
     no_of_records = networkobject.push_data_to_mongodb(records, COLLECTION, DATABASE)
     print(no_of_records, "records inserted successfully into the database.")
-    print("Inserting into database:", DATABASE)
-    print("Inserting into collection:", COLLECTION)
+    

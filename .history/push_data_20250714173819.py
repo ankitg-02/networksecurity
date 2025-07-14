@@ -34,17 +34,19 @@ class NetworkDataExtraction:
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
-    def push_data_to_mongodb(self, records, collection, database):
+    def push_data_to_mongodb(self, records, collection,database):
         try:
-            print("Connecting to database:", database)
-            print("Target collection:", collection)
+            self.database = database
+            self.collection = collection
+            self.records = records
+            
             self.mongo_client = pymongo.MongoClient(MONGO_DB_URL)
-            db = self.mongo_client[database]
-            col = db[collection]
-            result = col.insert_many(records)
-            print("Inserted IDs:", result.inserted_ids[:5], "...")  # print first 5 IDs
-            print("Total inserted:", len(result.inserted_ids))
-            return len(result.inserted_ids)
+            self.database = self.mongo_client[self.database]
+            
+            self.collection = self.database[self.collection]
+            self.collection.insert_many(self.records)
+            print("Inserted count:", self.collection.count_documents({}))
+            return (len(self.records))
         except Exception as e:
             raise NetworkSecurityException(e, sys)
         
